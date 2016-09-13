@@ -28,6 +28,8 @@ int main(int argc, char *argv[]) {
 	if(read_character != 'P'){
 		printf("Input file is not in PPM format.\r\n");
 	}
+	read_character = getc(input_file);
+	printf("Type of image: P%c.\r\n", read_character);
 	FILE *output_file = fopen(argv[3], "w");
 	/*
 	buffer = buffer[height];
