@@ -19,6 +19,8 @@ void read_p6(Pixel *buffer, FILE *input_file, int width, int height);
 
 void write_p3(Pixel *buffer, FILE *output_file, int width, int height, int max_color);
 
+void write_p6(Pixel *buffer, FILE *output_file, int width, int height, int max_color);
+
 int main(int argc, char *argv[]) {
 	/*
 	simple error checking, ensures that the user provides the format to convert to,
@@ -65,8 +67,8 @@ int main(int argc, char *argv[]) {
 	output_file = fopen(argv[3], "w");
 	//allocate memory for all the pixels
 	buffer = (Pixel *)malloc(width*height*sizeof(Pixel));
-	read_p3(buffer, input_file, width, height);
-	write_p3(buffer, output_file, width, height, max_color);	
+	read_p6(buffer, input_file, width, height);
+	write_p6(buffer, output_file, width, height, max_color);	
 	//writing each pixel into file in P3 format
 	fclose(input_file);
 	fclose(output_file);
@@ -114,7 +116,14 @@ void write_p3(Pixel *buffer, FILE *output_file, int width, int height, int max_c
 	}
 }
 
-/*void write_p6(){
-//fwrite() to write binary
+void write_p6(Pixel *buffer, FILE *output_file, int width, int height, int max_color){
+	//fwrite() to write binary
+	fprintf(output_file, "P6\n%d %d\n%d\n", width, height, max_color);
+	char string[20];
+	for(int i = 0; i < width*height; i++){
+		fwrite(&buffer[i].r, 1, sizeof(buffer[i].r), output_file);
+		fwrite(&buffer[i].g, 1, sizeof(buffer[i].g), output_file);
+		fwrite(&buffer[i].b, 1, sizeof(buffer[i].b), output_file);
+	}		
 }
-*/
+
