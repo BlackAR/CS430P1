@@ -86,11 +86,11 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 	if(*argv[1]== '3'){
-		printf("Creating PPM image in P3 format...");
+		printf("Creating PPM image in P3 format...\r\n");
 		write_p3(buffer, output_file, width, height, max_color);	
 	}
 	else if(*argv[1]== '6'){
-		printf("Creating PPM image in P6 format...");
+		printf("Creating PPM image in P6 format...\r\n");
 	 	write_p6(buffer, output_file, width, height, max_color);
 	}
 	else{
