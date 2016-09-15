@@ -35,22 +35,22 @@ int main(int argc, char *argv[]) {
 	FILE *output_file;
 	Pixel *buffer;
 	if(argc != 4){
-		printf("Incorrect number of arguments. Args given: %d\r\n", argc);
+		fprintf(stderr, "ERROR: Incorrect number of arguments. Args given: %d\r\n", argc);
 		return EXIT_FAILURE;
 	}
 	input_file = fopen(argv[2], "r");
 	if(input_file == NULL){
-		printf("Failed to open input file.\r\n");
+		fprintf(stderr, "ERROR: Failed to open input file.\r\n");
 		return EXIT_FAILURE;
 	}
 	//reading the image type (should be P3 or P6)
 	read_character = getc(input_file);
 	if(read_character != 'P'){
-		printf("Input file is not in PPM format.\r\n");
+		fprintf(stderr, "ERROR: Input file is not in PPM format.\r\n");
 	}
 	original_format = getc(input_file);
 	if(!(original_format != '6'|| original_format != '3')){
-		printf("Please provide a PPM image in either P3 or P6 format. Input given: %c.\r\n", original_format);
+		fprintf(stderr, "ERROR: Unsupported image type. Please provide a PPM image in either P3 or P6 format. Input given: %c.\r\n", original_format);
 	}
 	read_character = getc(input_file); //should get newline
 	read_character = getc(input_file);//should get either a comment character or number
@@ -66,9 +66,13 @@ int main(int argc, char *argv[]) {
 	}
 	//get width, height, and max color value
 	fscanf(input_file, "%d %d\n%d\n", &width, &height, &max_color);
+	if(max_color >= 256){
+		fprintf(stderr, "ERROR: Multi-byte samples not supported.\r\n");
+		return EXIT_FAILURE;
+	}
 	output_file = fopen(argv[3], "w");
 	if(output_file == NULL){
-		printf("Error creating output file.\r\n");
+		fprintf(stderr, "ERROR: Unable to open output file.\r\n");
 		return EXIT_FAILURE;
 	} 
 	//allocate memory for all the pixels
@@ -82,7 +86,7 @@ int main(int argc, char *argv[]) {
 		read_p6(buffer, input_file, width, height);
 	}
 	else{
-		printf("Error: Unknown format.");
+		fprintf(stderr, "ERROR: Unknown format.");
 		return EXIT_FAILURE;
 	}
 	if(*argv[1]== '3'){
@@ -94,7 +98,7 @@ int main(int argc, char *argv[]) {
 	 	write_p6(buffer, output_file, width, height, max_color);
 	}
 	else{
-		printf("Inappropriate format value. Please enter 3 or 6. Value given %c.\r\n", *argv[1]);
+		fprintf(stderr, "ERROR: Inappropriate format value. Please enter 3 or 6. Value given %c.\r\n", *argv[1]);
 		return EXIT_FAILURE;
 	}	
 	fclose(input_file);
