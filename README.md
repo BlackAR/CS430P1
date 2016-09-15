@@ -11,6 +11,6 @@ To compile the program:
 make ppmrw.c
 
 To run program:
-./ppmrw <number> <input filename> <output filename>
+./ppmrw number input-filename output-filename
 
 where number is either 3 or 6, based on what you want the output file to be.
