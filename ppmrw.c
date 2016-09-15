@@ -49,7 +49,6 @@ int main(int argc, char *argv[]) {
 		printf("Input file is not in PPM format.\r\n");
 	}
 	original_format = getc(input_file);
-	printf("Format: P%c", original_format);
 	if(!(original_format != '6'|| original_format != '3')){
 		printf("Please provide a PPM image in either P3 or P6 format. Input given: %c.\r\n", original_format);
 	}
@@ -58,7 +57,6 @@ int main(int argc, char *argv[]) {
 	//read and print out any comment in image to console
 	if (read_character == '#'){
 		while(read_character != '\n'){
-			printf("%c", read_character);
 			read_character = getc(input_file);
 		}
 		printf("%c", read_character);
@@ -76,9 +74,11 @@ int main(int argc, char *argv[]) {
 	//allocate memory for all the pixels
 	buffer = (Pixel *)malloc(width*height*sizeof(Pixel));
 	if(original_format == '3'){
+		printf("Reading PPM image in P3 format...\r\n");
 		read_p3(buffer, input_file, width, height);
 	}
 	else if(original_format == '6'){
+		printf("Reading PPM image in P6 format...\r\n");
 		read_p6(buffer, input_file, width, height);
 	}
 	else{
@@ -86,9 +86,11 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 	if(*argv[1]== '3'){
+		printf("Creating PPM image in P3 format...");
 		write_p3(buffer, output_file, width, height, max_color);	
 	}
 	else if(*argv[1]== '6'){
+		printf("Creating PPM image in P6 format...");
 	 	write_p6(buffer, output_file, width, height, max_color);
 	}
 	else{
