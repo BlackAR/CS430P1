@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 		printf("Input file is not in PPM format.\r\n");
 	}
 	original_format = getc(input_file);
+	printf("Format: P%c", original_format);
 	if(!(original_format != '6'|| original_format != '3')){
 		printf("Please provide a PPM image in either P3 or P6 format. Input given: %c.\r\n", original_format);
 	}
